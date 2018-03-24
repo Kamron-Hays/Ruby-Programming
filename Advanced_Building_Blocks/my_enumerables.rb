@@ -14,12 +14,26 @@ module Enumerable
   end
 
   def my_select
+    return to_enum(__method__) unless block_given?
+    arr = []
+  	self.my_each { |item| arr << item if yield(item) }
+  	arr
   end
 
   def my_all?
+    return true unless block_given?
+    self.my_each do |item|
+      return false unless yield(item)
+    end
+    true
   end
 
   def my_any?
+    return true unless block_given?
+    self.my_each do |item|
+      return true if yield(item)
+    end
+    false
   end
 
   def my_none?
@@ -46,3 +60,11 @@ p arr == ["banana is a fruit", "hamburger is a meat", "carrot is a vegetable"]
 arr = []
 [1,2,3].my_each_with_index { |item, i| arr << item * i }
 p arr == [0,2,6]
+
+p [1,2,3,4,5,6].my_select { |item| item%2 == 0 } == [2,4,6]
+
+p [1,2,3].my_all? { |item| item < 4 } == true
+p [1,2,3].my_all? { |item| item < 3 } == false
+
+p [1,2,3].my_any? { |item| item == 2 } == true
+p [1,2,3].my_any? { |item| item == 4 } == false

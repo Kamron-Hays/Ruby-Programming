@@ -26,25 +26,7 @@ class CodeMaker
   end
 
   def submit_guess(guess)
-    correct = 0
-    misplaced = 0
-    code = @code.dup
-
-    guess.each_with_index do |digit, i|
-      if digit == code[i]
-        correct += 1 # Correct digit and position
-        guess[i] = nil
-        code[i] = nil
-      end
-    end
-
-    guess.each_with_index do |digit, i|
-      if digit && i = code.index(digit)
-        misplaced += 1 # Correct digit, wrong position
-        code[i] = nil
-      end
-    end
-    [correct, misplaced]
+    Game.get_feedback(@code, guess)
   end
 end
 

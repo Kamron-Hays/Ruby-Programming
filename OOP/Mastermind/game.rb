@@ -19,6 +19,8 @@ class Game
       turn += 1
       puts "\nTurn #{turn}"
       response = @codemaker.submit_guess( @codebreaker.get_guess )
+      @codebreaker.set_response(response)
+
       if response[0] == 4
         puts "\nYou broke the code!"
         game_over = true
@@ -41,6 +43,29 @@ class Game
     end
   end
 
+  def self.get_feedback(code, guess)
+    correct = 0
+    misplaced = 0
+    c = code.dup
+    g = guess.dup
+
+    g.each_with_index do |digit, i|
+      if digit == c[i]
+        correct += 1 # Correct digit and position
+        g[i] = nil
+        c[i] = nil
+      end
+    end
+
+    g.each_with_index do |digit, i|
+      if digit && i = c.index(digit)
+        misplaced += 1 # Correct digit, wrong position
+        c[i] = nil
+      end
+    end
+    [correct, misplaced]
+  end
+  
   private
 
   def setup

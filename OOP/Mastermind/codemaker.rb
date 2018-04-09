@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require_relative "game"
-#require 'io/console'
+require 'io/console'
 
 class CodeMaker
   attr_accessor :code
@@ -18,7 +18,7 @@ class CodeMaker
   def create_secret_code
     if @human
       prompt = "\nCodemaker: enter the 4-digit secret code using the numbers 1-6: "
-      @code = Game.input_to_code(prompt)
+      @code = Game.input_to_code(prompt, true)
     else
       @code.clear
       4.times { @code << rand(1..6) }
